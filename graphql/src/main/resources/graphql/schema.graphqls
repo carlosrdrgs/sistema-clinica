@@ -1,0 +1,35 @@
+type Query {
+    museus: [Museu]
+    agendamento(codigo: String!): Agendamento
+    resumoMuseu(museuId: ID!, data: String!): ResumoMuseu
+}
+
+type Museu {
+    id: ID
+    nome: String
+    agendamentos(data: String): [Agendamento]
+}
+
+type Agendamento {
+    id: ID
+    codigoConfirmacao: String
+    dataVisita: String
+    horarioVisita: String
+    observacoes: String
+    museu: Museu
+    pessoas: [PessoaAgendada]
+    quantidadePessoas: Int
+}
+
+type PessoaAgendada {
+    id: ID
+    nome: String
+    cpf: String
+    tipoIngresso: String
+    compareceu: Boolean
+}
+
+type ResumoMuseu {
+    totalAgendamentos: Int
+    totalPessoas: Int
+}
