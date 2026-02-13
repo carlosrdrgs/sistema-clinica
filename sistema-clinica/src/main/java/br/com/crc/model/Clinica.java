@@ -3,23 +3,41 @@ package br.com.crc.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.validator.constraints.br.CNPJ;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+
+@Entity
 public class Clinica {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@CNPJ(message = "O CNPJ está em um formato inválido!")
+	@NotBlank(message = "O CNPJ não pode estar em branco!")
 	private String cnpj;
+	
+	
 	private String razaoSocial;
 	private String nomeFantasia;
 	private List<Contato> contatos;
 	private LocalDate dataInclusao;
 	private List<Pessoa> funcionarios;
+	private Endereco endereco;
 
 	public Clinica(String cnpj, String razaoSocial, String nomeFantasia, List<Contato> contatos,
-			LocalDate dataInclusao, List<Pessoa> funcionarios) {
+			LocalDate dataInclusao, List<Pessoa> funcionarios, Endereco endereco) {
 		this.cnpj = cnpj;
 		this.razaoSocial = razaoSocial;
 		this.nomeFantasia = nomeFantasia;
 		this.contatos = contatos;
 		this.dataInclusao = dataInclusao;
 		this.funcionarios = funcionarios;
+		this.endereco = endereco;
 	}
 
 	public String getCnpj() {
@@ -68,6 +86,18 @@ public class Clinica {
 
 	public void setFuncionarios(List<Pessoa> funcionarios) {
 		this.funcionarios = funcionarios;
+	}
+
+	public String getEndereco() {
+		return endereco.toString();
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	@Override

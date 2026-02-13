@@ -3,15 +3,60 @@ package br.com.crc.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.validator.constraints.br.CPF;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "pessoa")
 public class Pessoa {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank(message = "O nome não pode ser vazio!")
+	@Column(name = "nome_completo")
 	private String nome;
+
+	@CPF(message = "O CPF está em um formato inválido!")
+	@NotBlank(message = "O CPF não pode ser vazio!")
+	@Column(name = "cpf")
 	private String cpf;
+	
+	@NotNull(message = "A data de nascimento não pode estar vazia!")
+	@Past(message = "Data de nascimento não pode ser no futuro!")
 	private LocalDate dataNascimento;
 	private String nomeMae;
+	
+	@OneToMany
 	private List<Contato> contato;
+	
+	@OneToOne
 	private Endereco endereco;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "estado_civil")
 	private EstadoCivil estadoCivil;
+
+	
+	public Pessoa() {
+	}
 
 	public Pessoa(String nome, String cpf, LocalDate dataNascimento, String nomeMae, List<Contato> contato,
 			Endereco endereco, EstadoCivil estadoCivil) {
