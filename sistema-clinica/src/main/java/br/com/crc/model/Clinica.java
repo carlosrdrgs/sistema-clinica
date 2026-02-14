@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -21,12 +24,21 @@ public class Clinica {
 	@NotBlank(message = "O CNPJ não pode estar em branco!")
 	private String cnpj;
 	
-	
+	@NotBlank(message = "A Razão Social não pode estar em branco!")
 	private String razaoSocial;
+	
+	@NotBlank(message = "O Nome Fantasia não pode estar em branco!")
 	private String nomeFantasia;
+	
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Contato> contatos;
+	
 	private LocalDate dataInclusao;
+	
+	@OneToMany
 	private List<Pessoa> funcionarios;
+	
+	@OneToOne
 	private Endereco endereco;
 
 	public Clinica(String cnpj, String razaoSocial, String nomeFantasia, List<Contato> contatos,
@@ -64,10 +76,6 @@ public class Clinica {
 		this.nomeFantasia = nomeFantasia;
 	}
 
-	public String getContatos() {
-		return contatos.toString();
-	}
-
 	public void setContatos(List<Contato> contatos) {
 		this.contatos = contatos;
 	}
@@ -80,16 +88,8 @@ public class Clinica {
 		this.dataInclusao = dataInclusao;
 	}
 
-	public String getFuncionarios() {
-		return funcionarios.toString();
-	}
-
 	public void setFuncionarios(List<Pessoa> funcionarios) {
 		this.funcionarios = funcionarios;
-	}
-
-	public String getEndereco() {
-		return endereco.toString();
 	}
 
 	public void setEndereco(Endereco endereco) {
@@ -98,6 +98,18 @@ public class Clinica {
 
 	public Long getId() {
 		return id;
+	}
+
+	public List<Pessoa> getFuncionarios() {
+		return funcionarios;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+	
+	public List<Contato> getContatos() {
+		return contatos;
 	}
 
 	@Override

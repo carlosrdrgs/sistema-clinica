@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -36,7 +37,7 @@ public class Pessoa {
 
 	@CPF(message = "O CPF está em um formato inválido!")
 	@NotBlank(message = "O CPF não pode ser vazio!")
-	@Column(name = "cpf")
+	@Column(name = "cpf", unique = true)
 	private String cpf;
 	
 	@NotNull(message = "A data de nascimento não pode estar vazia!")
@@ -44,10 +45,10 @@ public class Pessoa {
 	private LocalDate dataNascimento;
 	private String nomeMae;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Contato> contato;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
 	
 	@Enumerated(EnumType.STRING)
@@ -106,10 +107,6 @@ public class Pessoa {
 		this.nomeMae = nomeMae;
 	}
 
-	public String getContato() {
-		return contato.toString();
-	}
-
 	public void setContato(List<Contato> contato) {
 		this.contato = contato;
 	}
@@ -128,6 +125,10 @@ public class Pessoa {
 
 	public void setEstadoCivil(EstadoCivil estadoCivil) {
 		this.estadoCivil = estadoCivil;
+	}
+
+	public List<Contato> getContato() {
+		return contato;
 	}
 
 	@Override
