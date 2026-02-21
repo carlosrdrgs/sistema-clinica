@@ -7,10 +7,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import lombok.experimental.NonFinal;
 
 @Entity
 @DiscriminatorValue("ATENDENTE")
@@ -21,10 +20,12 @@ public class Atendente extends Pessoa {
 	private String emailCorporativo;
 
 	@NotNull(message = "O atendente deve trabalhar em pelo menos uma clinica!")
-	@Column(name = "atendente_clinicas")
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	private List<Clinica> clinicas;
-	
+
+	public Atendente() {
+	}
+
 	public Atendente(String nome, String cpf, LocalDate dataNascimento, String nomeMae, List<Contato> contato,
 			Endereco endereco, EstadoCivil estadoCivil, String emailCorporativo, List<Clinica> clinicas) {
 		super(nome, cpf, dataNascimento, nomeMae, contato, endereco, estadoCivil);

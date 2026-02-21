@@ -12,7 +12,7 @@ import lombok.Data;
 @Entity
 @DiscriminatorValue("PACIENTE")
 public class Paciente extends Pessoa {
-	@OneToMany
+	@OneToMany(mappedBy = "paciente")
 	private List<Atendimento> atendimentos;
 	@OneToMany
 	private List<Plano> planos;

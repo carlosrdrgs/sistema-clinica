@@ -38,8 +38,12 @@ public class Clinica {
 	@OneToMany
 	private List<Pessoa> funcionarios;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
+	
+	public Clinica() {
+		super();
+	}
 
 	public Clinica(String cnpj, String razaoSocial, String nomeFantasia, List<Contato> contatos,
 			LocalDate dataInclusao, List<Pessoa> funcionarios, Endereco endereco) {

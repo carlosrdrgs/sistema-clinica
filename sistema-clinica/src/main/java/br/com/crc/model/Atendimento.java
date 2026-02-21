@@ -1,86 +1,44 @@
 package br.com.crc.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import lombok.Data;
 
+@Data
+@Entity
 public class Atendimento {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@OneToOne
-	@Column(name = "atendimento_paciente")
-	private Paciente paciente;
-	
-	@OneToOne
-	@Column(name = "atendimento_medico")
-	private Medico medico;
-	
-	@OneToOne
-	@Column(name = "atendimento_clinica")
-	private Clinica clinica;
-	
-	@OneToOne
-	@Column(name = "atendimento_data")
-	private LocalDate dataDoAtendimento;
-	
-	@OneToMany
-	private Doenca doencas;
-	
-	@Column(name = "atendimento_diagnostico")
-	private Boolean diagnostico;
-	
-	public Paciente getPaciente() {
-		return paciente;
-	}
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
-	}
-	public Medico getMedico() {
-		return medico;
-	}
-	public void setMedico(Medico medico) {
-		this.medico = medico;
-	}
-	public Clinica getClinica() {
-		return clinica;
-	}
-	public void setClinica(Clinica clinica) {
-		this.clinica = clinica;
-	}
-	public LocalDate getDataDoAtendimento() {
-		return dataDoAtendimento;
-	}
-	public void setDataDoAtendimento(LocalDate dataDoAtendimento) {
-		this.dataDoAtendimento = dataDoAtendimento;
-	}
-	public Doenca getDoencas() {
-		return doencas;
-	}
-	public void setDoencas(Doenca doencas) {
-		this.doencas = doencas;
-	}
-	public Boolean getDiagnostico() {
-		return diagnostico;
-	}
-	public void setDiagnostico(Boolean diagnostico) {
-		this.diagnostico = diagnostico;
-	}
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Override
-	public String toString() {
-		return "Atendimento [id=" + id + ", paciente=" + paciente + ", medico=" + medico + ", clinica=" + clinica
-				+ ", dataDoAtendimento=" + dataDoAtendimento + ", doencas=" + doencas + ", diagnostico=" + diagnostico
-				+ "]";
-	}
+    @ManyToOne 
+    @JoinColumn(name = "paciente_id")
+    private Paciente paciente;
+
+    @ManyToOne
+    @JoinColumn(name = "medico_id")
+    private Medico medico;
+
+    @ManyToOne
+    @JoinColumn(name = "clinica_id")
+    private Clinica clinica;
+
+    @Column(name = "atendimento_data")
+    private LocalDate dataDoAtendimento;
+
+    @ManyToMany
+    private List<Doenca> doencas;
+
+    @Column(name = "atendimento_diagnostico")
+    private Boolean diagnostico;
 }
